@@ -36,9 +36,7 @@ var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
-mongoose.connect(MONGODB_URI, {
-  useMongoClient: true
-});
+mongoose.connect(MONGODB_URI);
 
 // Routes
 
@@ -53,14 +51,14 @@ app.get('/', function(req, res){
     }); 
 });
 
-// A GET route for scraping the echojs website
+// A GET route for scraping the website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with request
   axios.get("https://spectrum.ieee.org/robotics").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
 
-    // Now, we grab every h2 within an article tag, and do the following:
+    // Now, we grab every h3 with a class of article-title, and do the following:
     $("h3.article-title").each(function(i, element) {
       // Save an empty result object
       var result = {};
@@ -72,7 +70,7 @@ app.get("/scrape", function(req, res) {
         .parent()
         .attr("href");
 
-      // Create a new Article using the `result` object built from scraping
+      // Create a new Headline using the `result` object built from scraping
       db.Headline.create(result)
         .then(function(dbArticle) {
           // View the added result in the console
@@ -91,7 +89,7 @@ app.get("/scrape", function(req, res) {
 
 // Route for getting all Articles from the db
 app.get("/articles", function(req, res) {
-  // Grab every document in the Articles collection
+  // Grab every document in the Headline collection
   db.Headline.find({})
     .then(function(dbArticle) {
       // If we were able to successfully find Articles, send them back to the client
