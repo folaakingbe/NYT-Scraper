@@ -1,9 +1,15 @@
-<div style="background: gray; margin: 30px">
-    {{title}}
-    <br>
-    {{link}}
-    <br>
+<div class="article">
+    <div class="title">{{title}}</div>
+    {{!-- <br> --}}
+    <div class="link">https://spectrum.ieee.org{{link}}</div>
+    {{!-- <br> --}}
     <button type="button" class="note btn btn-primary" data-id="{{_id}}" data-toggle="modal" data-target="#exampleModal">Make Note</button>
+    {{#if saved}}
+        <button type="button" class="saved btn btn-danger" data-id="{{_id}}" data-saved="{{saved}}">Unsave Article</button>
+    {{/if}}
+    {{#unless saved}}
+        <button type="button" class="saved btn btn-success" data-id="{{_id}}" data-saved="{{saved}}">Save Article</button>
+    {{/unless}}
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

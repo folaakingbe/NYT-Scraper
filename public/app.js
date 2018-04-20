@@ -47,3 +47,31 @@ $(document).on('click','.note',function(){
     $("#titleinput").val("");
     $("#bodyinput").val("");
   });
+
+  $(document).on("click", ".saved", function() {
+    var thisId = $(this).attr("data-id");
+    var savedArticle = $(this).attr("data-saved");
+    var newSavedArticle;
+    console.log(thisId, savedArticle);
+    if (savedArticle == "true") {
+      newSavedArticle = false;
+    }
+    else {
+      newSavedArticle = true;
+    }
+    console.log(newSavedArticle);
+    $.ajax({
+      method: "PUT",
+      url: "/saved/" + thisId,
+      data: {
+        // Value taken from title input
+        saved: newSavedArticle
+      }
+    })
+    .then(
+      function() {
+        console.log("changed saved to", newSavedArticle);
+        location.reload();
+      }
+    )
+  });

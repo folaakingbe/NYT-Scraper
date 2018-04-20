@@ -1,0 +1,22 @@
+body {
+    background-image: url('squaredMetal.png');
+}
+
+.article {
+    background: gray; 
+    margin: 30px;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.note {
+    border-radius: 10px;
+}
+
+h1 {
+    text-align: center;
+    font-family: "Arial Black", "Gadget", sans-serif
+}

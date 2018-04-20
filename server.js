@@ -138,6 +138,40 @@ app.post("/articles/:id", function(req, res) {
     });
 });
 
+app.put("/saved/:id", function(req, res) {
+  // Create a new note and pass the req.body to the entry
+  console.log(req.body);
+  db.Headline.findOneAndUpdate({ _id: req.params.id }, { saved: req.body.saved })
+    .then(function(dbArticle) {
+      // If we were able to successfully update an Article, send it back to the client
+      res.json(dbArticle);
+      console.log(res.body);
+      // res.render('index', hbsObject);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
+app.get("/saved", function(req, res) {
+  db.Headline.find({ saved: true })
+    // ..and populate all of the notes associated with it
+    // .populate("note")
+    .then(function(dbArticle) {
+      // If we were able to successfully find an Article with the given id, send it back to the client
+      // res.json(dbArticle);
+      let  hbsObject = {
+        articles: dbArticle
+      };
+      res.render('index', hbsObject);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
 // Start the server
 app.listen(PORT, function() {
   console.log("App running on port " + PORT + "!");
